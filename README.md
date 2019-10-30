@@ -9,5 +9,5 @@ Commands:
   index.js remove  Removing data from notes..
 
 Options:
-  --help     Show help                                                 [boolean]
-  --version  Show version number                                       [boolean]
+  --help     Show help                                          
+  --version  Show version number                                   
