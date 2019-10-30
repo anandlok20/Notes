@@ -1,13 +1,13 @@
 # Notes
-node.js
-> node index.js --help
-index.js [command]
+node.js</br>
+> node index.js --help</br>
+index.js [command]</br>
 
-Commands:
-  index.js add     Adding data to notes..
-  index.js list    Listing data of notes..
-  index.js remove  Removing data from notes..
+Commands:</br>
+  index.js add     Adding data to notes..</br>
+  index.js list    Listing data of notes..</br>
+  index.js remove  Removing data from notes..</br>
 
-Options:
-  --help     Show help                                          
-  --version  Show version number                                   
+Options:</br>
+  --help     Show help          </br>                                
+  --version  Show version number        </br>                           
