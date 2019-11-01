@@ -1,70 +1,82 @@
 const fs = require('fs')
 const chalk = require('chalk')
-const addNotes = function(title, body) {
-
-    const noteData = loadData()
+const addNotes = (title, body) => {
+    // debugger;
+    const Notes = loadData()
         // console.log(loadData());
-    const dupNotes = noteData.filter(function(note) {
-        // console.log(dupNotes);
-        return note.title === title
-    })
-    if (dupNotes.length === 0) {
-        noteData.push({
+        // const dupNotes = noteData.filter((note) => note.title === title)
+    const dupNote = Notes.find((note) => note.title === title) //improve the time
+    if (!dupNote) {
+        Notes.push({
             title: title,
             body: body
         })
-        saveData(noteData)
-        console.log(chalk.green("New note saved with title " + title))
+        const noteD = { Notes }
+        saveData(noteD)
+        console.log(chalk.green.inverse("New note saved with title " + title))
     } else {
-        console.log(chalk.red("Title " + title + " already exists!!"))
+        console.log(chalk.red.inverse("Title " + title + " already exists!!"))
     }
 }
 
-const getNotes = function() {
+const getNotes = () => {
     const noteData = loadData();
-    if (JSON.stringify(noteData) === "[]") {
-        console.log(chalk.red("File Empty!!"))
-    } else {
-        console.log(chalk.blue("Notes: \n" + JSON.stringify(noteData, null, '\t')))
-    }
+    console.log(chalk.blue("Notes List"))
+    var i = 0
+    noteData.forEach(note => {
+        console.log(chalk.yellow("\t" + ++i + ". " + note.title))
+    })
 }
 
-const removeData = function(title) {
+const removeData = (title) => {
     const noteData = loadData()
     var flag = 0
         // console.log(title);
-    for (var i = 0; i < noteData.length; i++) {
-        if (noteData[i].title == title) {
-            noteData.splice(i, 1)
-            saveData(noteData)
-            flag = 0
-            console.log(chalk.green(title + " data removed!!"))
-            break
-
-        } else {
-            flag++
-        }
-    }
-    if (flag > 0) {
-        console.log(chalk.red("Title not found!!"))
+    const Notes = noteData.filter(note => note.title !== title)
+    const dD = { Notes }
+        // console.log(dupData.length + " | " + noteData.length)
+    if (Notes.length - noteData.length === 0) {
+        console.log(chalk.red.inverse("Title not found!!"))
+    } else {
+        fs.writeFileSync("notes.json", JSON.stringify(dD, null, "\t"))
+        console.log(chalk.green.inverse(title + " data removed!!"))
     }
 }
 
-const loadData = function() {
+const loadData = () => {
     try {
-        return JSON.parse(fs.readFileSync("notes.json"))
+        // console.log(JSON.parse(fs.readFileSync("notes.json")).Notes)
+        return (JSON.parse(fs.readFileSync("notes.json"))).Notes
     } catch (error) {
         // console.log("File doesn't exist!!" + error)
         return []
     }
 }
 
-const saveData = function(dataObj) {
+const saveData = (dataObj) => {
     fs.writeFileSync("notes.json", JSON.stringify(dataObj, null, "\t"));
+}
+
+const readData = (titl) => {
+    // console.log(titl)
+    const Notes = loadData()
+        // console.log(Notes)
+    const data = Notes.find(note => note.title === titl)
+    if (data) {
+        if (data.body !== "") {
+            console.log(chalk.green.inverse("Notes for " + titl + " is \" " + data.body + " \""))
+        } else {
+            console.log(chalk.red.inverse(titl + " body is empty!!"))
+        }
+    } else {
+        console.log(chalk.red.inverse(titl + " title not exists"))
+    }
+
 }
 
 module.exports = {
     addNotes: addNotes,
     getNotes: getNotes,
-    removeData: removeData
+    removeData: removeData,
+    readData: readData
 }

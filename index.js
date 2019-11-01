@@ -16,7 +16,7 @@ yargs.command({
             type: "string"
         }
     },
-    handler: function(argv) {
+    handler(argv) {
         app.addNotes(argv.title, argv.body)
     }
 })
@@ -24,7 +24,7 @@ yargs.command({
 yargs.command({
     command: "list",
     describe: "Listing data of notes..",
-    handler: function() {
+    handler() {
         app.getNotes()
     }
 })
@@ -39,8 +39,23 @@ yargs.command({
             type: "string"
         }
     },
-    handler: function(argv) {
+    handler(argv) {
         app.removeData(argv.title)
+    }
+})
+
+yargs.command({
+    command: "read",
+    describe: "Reading data from notes..",
+    builder: {
+        title: {
+            describe: "title for notes data",
+            demandOption: true,
+            type: "string"
+        }
+    },
+    handler(argv) {
+        app.readData(argv.title)
     }
 })
 
